@@ -1,82 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Joongo Market</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <style>
-        .container {
-            max-width: 100%;
-        }
-    </style>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo_sm.png" width="150" height="30">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <form th:action="@{/search/aution}" class="form-inline" method="get">
-                    <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="경매 찾기" aria-label="Search">
-                </form>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/login}">로그인</a>
-            </li>
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
-            </li>
-            <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/notifications}">알림</a>
-            </li>
-            <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link btn btn-outline-primary" href="#" th:href="@{/signup}">중고거래 글쓰기</a>
-            </li>
-            <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    프로필
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                    <li>
-                        <h6 class="dropdown-header">
-                        <span sec:authentication="name">Username</span>
-                        </h6>
-                    </li>
-                    <li><a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a></li>
-                    <li><a class="dropdown-item" >거래내역</a></li>
-                    <li><div class="dropdown-divider"></div></li>
-                    <li><a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a></li>
-                    <li>
-                        <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
-                            <button class="dropdown-item" type="submit">로그아웃</button>
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
-
+    <div th:replace="fragments.html :: main-nav"></div>
 <div class="container">
     <div class="py-5 text-center">
         <h2>중고마켓</h2>
     </div>
 
-    <footer th:fragment="footer">
-        <div class="text-center">
-            <img src="/images/logo_long.jpg" alt="" width="150">
-            <small class="d-block mb-3 text-muted">&copy; 2021</small>
-        </div>
-    </footer>
+    <div th:replace="fragments.html :: footer"></div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 <script type="application/javascript">
