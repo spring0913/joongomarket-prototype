@@ -1,6 +1,7 @@
 package com.joongomarket.account;
 
 import com.joongomarket.domain.Account;
+import com.joongomarket.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +73,10 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> id = accountRepository.findById(account.getId());
+        id.ifPresent(a->a.getTags().add(tag));
     }
 }

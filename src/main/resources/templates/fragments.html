@@ -6,6 +6,7 @@
     <title>Joongo Market</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
@@ -13,6 +14,21 @@
         .container {
             max-width: 100%;
         }
+
+        .tagify-outside {
+            border: 1px;
+        }
+
+        .tagify-outside .tagify__input{
+            order: -1;
+            flex: 100%;
+            background-color : #ffffff;
+            border-radius: 4px;
+            border: 1px solid var(--tags-border-color);
+            margin-bottom: 1em;
+            transition: .1s;
+        }
+
     </style>
 </head>
 
@@ -61,10 +77,10 @@
                             <span sec:authentication="name">Username</span>
                         </h6>
                     </li>
-                    <li><a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a></li>
+                    <li><a class="dropdown-item" >프로필</a></li>
                     <li><a class="dropdown-item" >거래내역</a></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li><a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a></li>
+                    <li><a class="dropdown-item" href="#" th:href="@{'/settings/tags'}">설정</a></li>
                     <li>
                         <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
                             <button class="dropdown-item" type="submit">로그아웃</button>
@@ -82,6 +98,11 @@
         <small class="d-block mb-3 text-muted">&copy; 2021</small>
     </div>
 </footer>
+
+<div th:fragment="settings-menu (currentMenu)" class="list-group">
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" href="#" th:href="@{/settings/tags}">관심 카테고리</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active" href="#" th:href="@{/settings/zones}">활동 지역</a>
+</div>
 
 <script type="application/javascript" th:fragment="form-validation">
     (function () {
