@@ -1,5 +1,7 @@
 package com.joongomarket.settings;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joongomarket.account.AccountService;
 import com.joongomarket.account.CurrentUser;
 import com.joongomarket.domain.Account;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,24 +30,42 @@ public class SettingsController {
 
     private final TagRepository tagRepository;
     private final AccountService accountService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping(SETTINGS_TAGS_URL)
-    public String updateTags(@CurrentUser Account account, Model model){
+    public String updateTags(@CurrentUser Account account, Model model) throws JsonProcessingException {
         model.addAttribute(account);
+        Set<Tag> tags = accountService.getTags(account);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+        List<String> allTags = tagRepository.findAll().stream().map(Tag::getTitle).collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allTags));
+
         return SETTINGS_TAGS_VIEW_NAME;
     }
 
-    @PostMapping("/settings/tags/add")
+    @PostMapping(SETTINGS_TAGS_URL + "/add")
     @ResponseBody
     public ResponseEntity addTags(@CurrentUser Account account, @RequestBody TagForm tagForm){
         String title = tagForm.getTagTitle();
         Tag tag = tagRepository.findByTitle(title);
         if(tag == null){
-            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+            tag = tagRepository.save(Tag.builder().title(title).build());
         }
 
         accountService.addTag(account, tag);
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping(SETTINGS_TAGS_URL + "/remove")
+    @ResponseBody
+    public ResponseEntity removeTags(@CurrentUser Account account, @RequestBody TagForm tagForm){
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if(tag == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        accountService.removeTag(account, tag);
+        return ResponseEntity.ok().build();
+    }
 }
