@@ -2,6 +2,7 @@ package com.joongomarket.account;
 
 import com.joongomarket.domain.Account;
 import com.joongomarket.domain.Tag;
+import com.joongomarket.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -90,5 +91,20 @@ public class AccountService implements UserDetailsService {
     public void removeTag(Account account, Tag tag) {
         Optional<Account> id = accountRepository.findById(account.getId());
         id.ifPresent(a->a.getTags().remove(tag));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        Optional<Account> id = accountRepository.findById(account.getId());
+        return id.orElseThrow().getZones();
+    }
+
+    public void addZone(Account account, Zone zone) {
+        Optional<Account> id = accountRepository.findById(account.getId());
+        id.ifPresent(a->a.getZones().add(zone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> id = accountRepository.findById(account.getId());
+        id.ifPresent(a->a.getZones().remove(zone));
     }
 }

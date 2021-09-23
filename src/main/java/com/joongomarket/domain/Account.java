@@ -53,6 +53,9 @@ public class Account {
     @ManyToMany
     private Set<Tag> tags;
 
+    @ManyToMany
+    private Set<Zone> zones;
+
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
     }
@@ -65,4 +68,5 @@ public class Account {
     public boolean isValidToken(String token) {
         return this.getEmailCheckToken().equals(token);
     }
+
 }
