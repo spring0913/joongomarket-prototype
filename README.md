@@ -15,7 +15,6 @@
 # 중고마켓 (Ver.2)
 프론트와 백엔드가 분리된 중고마켓 프로젝트
 ### To Do List
-- [ ] MSA (Kafka)
 - [ ] Stress Test (JMeter / nGrinder)
 - [ ] API 문서 자동화 (Swagger / Spring REST Docs)
 - [ ] HTTP 2.0 지원
